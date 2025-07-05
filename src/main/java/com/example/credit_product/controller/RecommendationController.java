@@ -11,7 +11,6 @@ public class RecommendationController {
 
     private final RecommendationService recommendationService;
 
-    //сервис?
     public RecommendationController(RecommendationService recommendationService) {
         this.recommendationService = recommendationService;
     }
