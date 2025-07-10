@@ -1,8 +1,13 @@
 package com.example.credit_product.dto;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Рекомендованный банковский продукт")
 public class RecommendationDTO {
+    @Schema(description = "Название продукта", example = "Invest 500")
     private String name;
+    @Schema(description = "Идентификатор продукта", example = "147f6a0f-3b91-413b-ab99-87f081d60d5a")
     private String id;
+    @Schema(description = "Описание продукта")
     private String text;
 
     // Конструкторы
