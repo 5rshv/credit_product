@@ -1,6 +1,5 @@
 package com.example.credit_product.model;
 
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
