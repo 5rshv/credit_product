@@ -70,13 +70,10 @@ public class RecommendationController {
             )
     })
     @GetMapping("/{userId}")
-    public ResponseEntity<RecommendationResponse> getRecommendations(@PathVariable UUID userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new UserNotFoundException(userId.toString());
-        }
+    public RecommendationResponse getRecommendations(@PathVariable UUID userId) {
 
         List<RecommendationDTO> recommendations = recommendationService.getRecommendations(userId);
-        return ResponseEntity.ok(new RecommendationResponse(userId.toString(), recommendations));
+        return new RecommendationResponse(userId.toString(), recommendations);
     }
 
     @Operation(
