@@ -1,6 +1,7 @@
 package com.example.credit_product.dto;
 
 import java.util.List;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Ответ с рекомендациями для пользователя")
@@ -10,7 +11,6 @@ public class RecommendationResponse {
 
     @Schema(description = "Список рекомендованных продуктов")
     private List<RecommendationDTO> recommendations;
-
 
 
     // Конструкторы
