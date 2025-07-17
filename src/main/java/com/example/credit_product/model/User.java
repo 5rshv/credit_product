@@ -2,8 +2,9 @@ package com.example.credit_product.model;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Table;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+
 
 import java.util.UUID;
 

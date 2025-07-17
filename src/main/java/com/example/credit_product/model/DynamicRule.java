@@ -1,11 +1,12 @@
 package com.example.credit_product.model;
 
+import jakarta.persistence.Table;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+
 
 import java.util.UUID;
 
-@Table("dynamic_rules")
+@Table(schema = "dynamic_rules")
 public class DynamicRule {
     @Id
     private UUID id;
