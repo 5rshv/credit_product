@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: developer
+      changes:
+        - createTable:
+            tableName: dynamic_rules
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: product_text
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rule_json
+                  type: TEXT
+                  constraints:
+                    nullable: false

@@ -15,7 +15,7 @@ public class UserRepository {
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<User> userRowMapper;
 
-    public UserRepository( JdbcTemplate jdbcTemplate) {
+    public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.userRowMapper = (rs, rowNum) -> new User(
                 UUID.fromString(rs.getString("id")),

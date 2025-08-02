@@ -1,0 +1,155 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: your_name
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: product_types
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: code
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: type_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    references: product_types(id)
+                    foreignKeyName: fk_product_type
+
+        - createTable:
+            tableName: transaction_types
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: code
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    references: users(id)
+                    foreignKeyName: fk_transaction_user
+              - column:
+                  name: product_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    references: products(id)
+                    foreignKeyName: fk_transaction_product
+              - column:
+                  name: transaction_type_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    references: transaction_types(id)
+                    foreignKeyName: fk_transaction_type
+              - column:
+                  name: amount
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: DATE
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2
+      author: your_name
+      changes:
+        - insert:
+            tableName: product_types
+            columns:
+              - column:
+                  name: id
+                  value: "550e8400-e29b-41d4-a716-446655440000"
+              - column:
+                  name: code
+                  value: "DEBIT"
+              - column:
+                  name: name
+                  value: "Дебетовый счет"
+
+        - insert:
+            tableName: product_types
+            columns:
+              - column:
+                  name: id
+                  value: "550e8400-e29b-41d4-a716-446655440001"
+              - column:
+                  name: code
+                  value: "SAVING"
+              - column:
+                  name: name
+                  value: "Сберегательный счет"
+
+        - insert:
+            tableName: transaction_types
+            columns:
+              - column:
+                  name: id
+                  value: "660e8400-e29b-41d4-a716-446655440000"
+              - column:
+                  name: code
+                  value: "DEPOSIT"
+              - column:
+                  name: name
+                  value: "Пополнение"

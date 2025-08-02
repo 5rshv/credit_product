@@ -1,31 +1,28 @@
 package com.example.credit_product.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
-
+import jakarta.persistence.*;
 import java.util.UUID;
 
-@Table("dynamic_rules")
+@Entity
+@Table(name = "dynamic_rules")
 public class DynamicRule {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @Column(nullable = false)
     private String productName;
+
+    @Column(nullable = false)
     private UUID productId;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String productText;
+
+    @Column(nullable = false, columnDefinition = "JSONB")
     private String ruleJson;
 
-    // Конструкторы, геттеры и сеттеры
-    public DynamicRule() {
-    }
-
-    public DynamicRule(UUID id, String productName, UUID productId, String productText, String ruleJson) {
-        this.id = id;
-        this.productName = productName;
-        this.productId = productId;
-        this.productText = productText;
-        this.ruleJson = ruleJson;
-    }
-
+    // Геттеры и сеттеры
     public UUID getId() {
         return id;
     }
