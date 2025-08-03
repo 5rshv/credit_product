@@ -3,12 +3,19 @@ package com.example.credit_product.service;
 import com.example.credit_product.dto.DynamicRuleDTO;
 import com.example.credit_product.dto.RecommendationDTO;
 import com.example.credit_product.exception.UserNotFoundException;
+import com.example.credit_product.model.DynamicRule;
+import com.example.credit_product.repository.DynamicRuleRepository;
 import com.example.credit_product.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class RecommendationService {

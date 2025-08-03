@@ -1,7 +1,6 @@
 package com.example.credit_product.config;
 
 import liquibase.integration.spring.SpringLiquibase;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -13,12 +12,10 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.example.credit_product.repository.dynamic",
+        basePackages = "com.example.credit_product.repository",
         entityManagerFactoryRef = "dynamicRulesEntityManagerFactory",
         transactionManagerRef = "dynamicRulesTransactionManager"
 )
@@ -36,11 +33,11 @@ public class DynamicRulesDataSourceConfig {
     @Value("${spring.dynamic-rules.datasource.password:}")
     private String password;
 
-    @Bean(name = "dynamicRulesLiquibase")
-    public SpringLiquibase dynamicRulesLiquibase() {
+    @Bean
+    public SpringLiquibase liquibase() {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(dynamicRulesDataSource());
-        liquibase.setChangeLog("classpath:db/changelog/changes/v2-dynamic-rules.yaml");
+        liquibase.setChangeLog("classpath:db/changelog/db.changelog-master.yaml");
         return liquibase;
     }
 

@@ -11,7 +11,7 @@ public class Transaction {
     @Id
     private UUID id;
 
-    @Column(name = "user_id")
+    @Column(nullable = false)
     private UUID userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -19,7 +19,7 @@ public class Transaction {
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transaction_type_id")
+    @JoinColumn(name = "type_id")
     private TransactionType type;
 
     @Column(nullable = false)
