@@ -33,3 +33,44 @@ databaseChangeLog:
                   type: TEXT
                   constraints:
                     nullable: false
+
+  - changeSet:
+      id: 3
+      author: developer
+      changes:
+        - insert:
+            tableName: dynamic_rules
+            columns:
+              - column:
+                  name: id
+                  value: "c7a1ca11-bf3e-48b2-b4bb-2101ce24d001"
+              - column:
+                  name: product_name
+                  value: "Кредит наличными"
+              - column:
+                  name: product_id
+                  value: "c60ef902-dc8a-4ff0-8661-c973d180125a"
+              - column:
+                  name: product_text
+                  value: "Лучший кредит под низкий процент"
+              - column:
+                  name: rule_json
+                  value: '[{"field":"age", "op":"gt", "value":"21"}]'
+        - insert:
+            tableName: dynamic_rules
+            columns:
+              - column:
+                  name: id
+                  value: "c7a1ca11-bf3e-48b2-b4bb-2101ce24d002"
+              - column:
+                  name: product_name
+                  value: "Премиальная карта"
+              - column:
+                  name: product_id
+                  value: "d000ef40-dc8a-4444-8888-c973d1801299"
+              - column:
+                  name: product_text
+                  value: "Карта с кэшбеком 5%"
+              - column:
+                  name: rule_json
+                  value: '[{"field":"balance", "op":"gte", "value":"100000"}]'

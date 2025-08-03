@@ -3,8 +3,7 @@ package com.example.credit_product.controller;
 import com.example.credit_product.dto.ErrorResponse;
 import com.example.credit_product.dto.RecommendationDTO;
 import com.example.credit_product.dto.RecommendationResponse;
-import com.example.credit_product.exception.UserNotFoundException;
-import com.example.credit_product.model.User;
+import com.example.credit_product.model.Users;
 import com.example.credit_product.repository.UserRepository;
 import com.example.credit_product.service.RecommendationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -85,7 +84,7 @@ public class RecommendationController {
                     responseCode = "200",
                     description = "Успешный запрос",
                     content = @Content(
-                            schema = @Schema(implementation = User[].class)
+                            schema = @Schema(implementation = Users[].class)
                     )
             ),
             @ApiResponse(
@@ -94,12 +93,18 @@ public class RecommendationController {
             )
     })
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<Users>> getAllUsers() {
         try {
-            List<User> users = userRepository.findAll();
+            List<Users> users = userRepository.findAll();
             return ResponseEntity.ok(users);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
+    @GetMapping("/user")
+    public List<Users> getAllUser() {
+        return userRepository.findAll();
+    }
+
+
 }

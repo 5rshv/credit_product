@@ -1,13 +1,13 @@
 package com.example.credit_product.service;
 
 import com.example.credit_product.dto.DynamicRuleDTO;
-import com.example.credit_product.dto.RecommendationDTO;
 import com.example.credit_product.dto.RuleQueryDTO;
 import com.example.credit_product.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class DynamicRuleEngine {
@@ -19,7 +19,21 @@ public class DynamicRuleEngine {
     }
 
     public boolean evaluateRule(DynamicRuleDTO rule, UUID userId) {
-        for (RuleQueryDTO query : rule.getRule()) {
+        if (rule == null || rule.getRule() == null) {
+            throw new IllegalArgumentException("DynamicRuleDTO или его список правил равен null");
+        }
+
+        // ОЧИСТКА: убираем условия с пустым query или null вообще
+        List<RuleQueryDTO> filteredQueries = rule.getRule().stream()
+                .filter(q -> q != null && q.getQuery() != null && !q.getQuery().isBlank())
+                .collect(Collectors.toList());
+
+        if (filteredQueries.isEmpty()) {
+            // Нет валидных подусловий, правило невозможно проверить — считаем невыполненным
+            return false;
+        }
+
+        for (RuleQueryDTO query : filteredQueries) {
             boolean queryResult = executeQuery(query, userId);
 
             // Если любой запрос вернул false, правило не выполняется
@@ -31,25 +45,47 @@ public class DynamicRuleEngine {
     }
 
     private boolean executeQuery(RuleQueryDTO query, UUID userId) {
-        switch (query.getQuery()) {
+        List<String> args = query.getArguments();
+        String queryType = query.getQuery();
+        switch (queryType) {
             case "USER_OF":
-                return transactionRepository.hasTransactionsOfProductType(userId, query.getArguments().get(0));
+                if (args == null || args.size() < 1 || args.get(0) == null) {
+                    throw new IllegalArgumentException("Missing argument for USER_OF query: " + query);
+                }
+                return transactionRepository.hasTransactionsOfProductType(userId, args.get(0));
 
             case "ACTIVE_USER_OF":
-                return transactionRepository.countTransactionsByUserAndProductType(userId, query.getArguments().get(0)) >= 5;
+                if (args == null || args.size() < 1 || args.get(0) == null) {
+                    throw new IllegalArgumentException("Missing argument for ACTIVE_USER_OF query: " + query);
+                }
+                return transactionRepository.countTransactionsByUserAndProductType(userId, args.get(0)) >= 5;
 
             case "TRANSACTION_SUM_COMPARE":
-                String productType = query.getArguments().get(0);
-                String transactionType = query.getArguments().get(1);
-                String operator = query.getArguments().get(2);
-                long threshold = Long.parseLong(query.getArguments().get(3));
+                if (args == null || args.size() < 4
+                        || args.get(0) == null || args.get(1) == null
+                        || args.get(2) == null || args.get(3) == null) {
+                    throw new IllegalArgumentException("Missing arguments for TRANSACTION_SUM_COMPARE: " + query);
+                }
+                String productType = args.get(0);
+                String transactionType = args.get(1);
+                String operator = args.get(2);
+                long threshold;
+                try {
+                    threshold = Long.parseLong(args.get(3));
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Threshold is not a valid long: " + args.get(3));
+                }
 
                 long sum = getTransactionSum(userId, productType, transactionType);
                 return compareValues(sum, threshold, operator);
 
             case "TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW":
-                String prodType = query.getArguments().get(0);
-                String op = query.getArguments().get(1);
+                if (args == null || args.size() < 2
+                        || args.get(0) == null || args.get(1) == null) {
+                    throw new IllegalArgumentException("Missing arguments for TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW: " + query);
+                }
+                String prodType = args.get(0);
+                String op = args.get(1);
 
                 long deposits = transactionRepository.getTotalDepositsByProductType(userId, prodType);
                 long withdrawals = transactionRepository.getTotalExpensesByProductType(userId, prodType);
@@ -57,7 +93,7 @@ public class DynamicRuleEngine {
                 return compareValues(deposits, withdrawals, op);
 
             default:
-                throw new IllegalArgumentException("Неизвестный тип запроса: " + query.getQuery());
+                throw new IllegalArgumentException("Неизвестный тип запроса: " + queryType);
         }
     }
 

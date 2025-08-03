@@ -110,6 +110,19 @@ databaseChangeLog:
                   type: DATE
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 3
+      author: your_name
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "770e8400-e29b-41d4-a716-446655440000"
+              - column:
+                  name: name
+                  value: "Иван Иванов"
 
   - changeSet:
       id: 2
@@ -153,3 +166,4 @@ databaseChangeLog:
               - column:
                   name: name
                   value: "Пополнение"
+
