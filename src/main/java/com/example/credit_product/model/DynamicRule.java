@@ -10,16 +10,16 @@ public class DynamicRule {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "product_name", nullable = false)
+    @Column(nullable = false)
     private String productName;
 
-    @Column(name = "product_id", nullable = false)
+    @Column(nullable = false)
     private UUID productId;
 
-    @Column(name = "product_text", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String productText;
 
-    @Column(name = "rule_json", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "JSONB")
     private String ruleJson;
 
     // Геттеры и сеттеры
