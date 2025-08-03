@@ -49,15 +49,15 @@ public class TelegramRecommendationBot {
 
                     if ("/start".equalsIgnoreCase(text.trim())) {
                         bot.execute(new SendMessage(chatId, """
-                                                                Привет! Я рекомендательный бот.
+                                Привет! Я рекомендательный бот.
                                 
-                                                                Для получения персональных рекомендаций используйте команду:
-                                /recommend username
+                                Для получения персональных рекомендаций используйте команду:
+/recommend username
                                 
-                                Дополнительные команды:
-                                /rule_stats — статистика срабатывания правил
-                                /clear_caches — сбросить кеш системы
-                                /system_info — информация о сервисе
+Дополнительные команды:
+/rule_stats — статистика срабатывания правил
+/clear_caches — сбросить кеш системы
+/system_info — информация о сервисе
                                 """));
                         continue;
                     }
@@ -77,14 +77,14 @@ public class TelegramRecommendationBot {
                         bot.execute(new SendMessage(chatId, info));
                     } else {
                         bot.execute(new SendMessage(chatId, """
-                                                            Для получения персональных рекомендаций используйте команду:
-                                /recommend username
-                                
-                                Дополнительные команды:
-                                /rule_stats — статистика срабатывания правил
-                                /clear_caches — сбросить кеш системы
-                                /system_info — информация о сервисе
-                                """));
+                            Для получения персональных рекомендаций используйте команду:
+/recommend username
+
+Дополнительные команды:
+/rule_stats — статистика срабатывания правил
+/clear_caches — сбросить кеш системы
+/system_info — информация о сервисе
+                        """));
                     }
                 }
             }
