@@ -28,9 +28,6 @@ public interface RecommendationRuleRepository extends JpaRepository<Recommendati
      */
     List<RecommendationRule> findAllByProductTypeAndActiveTrue(String productType);
 
-    /**
-     * Проверяет существует ли правило с таким именем
-     */
     boolean existsByName(String name);
 
     /**
