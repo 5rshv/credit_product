@@ -161,15 +161,6 @@ System_Boundary(s1, "Recommendation Service") {
   Component(cache, "Caffeine Cache", "Java Cache", "Хранение результатов запросов для ускорения работы")
 }
 
-Rel(user, api, "Запросы рекомендаций")
-Rel(user, bot, "Запросы через Telegram")
-Rel(manager, api, "CRUD над правилами, просмотр статистики")
-Rel(extsys, api, "Сброс кеша, получение инфо")
-Rel(api, service, "Вызовы бизнес-логики")
-Rel(service, ruleRepo, "SQL-запросы к динамическим правилам")
-Rel(service, userData, "SQL-запросы к транзакциям")
-Rel(service, cache, "Чтение/запись результатов")
-}
 
 Rel(user, api, "Запросы рекомендаций")
 Rel(user, bot, "Запросы через Telegram")
@@ -179,8 +170,13 @@ Rel(api, service, "Вызовы бизнес-логики")
 Rel(service, ruleRepo, "SQL-запросы к динамическим правилам")
 Rel(service, userData, "SQL-запросы к транзакциям")
 Rel(service, cache, "Чтение/запись результатов")
-- Activity Diagram алгоритма рекомендаций.
-- %%{init: {'theme':'forest'}}%%
+}
+### Activity Diagram
+```markdown
+## 🔄 Activity Diagram алгоритма рекомендаций
+
+```mermaid
+%%{init: {'theme':'forest'}}%%
 flowchart TD
     A[Получен запрос на рекомендации] --> B{Есть в кеше?}
     B -- Да --> C[Вернуть результат из кеша]
@@ -193,7 +189,6 @@ flowchart TD
     H -- Да --> J[Сформировать список рекомендаций]
     J --> K[Сохранить в кеш]
     K --> L[Вернуть результат пользователю]
-
 ---
 
 ## ✅ Установка и запуск
