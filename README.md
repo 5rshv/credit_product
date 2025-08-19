@@ -87,14 +87,14 @@
 
 ## 📊 Диаграмма вариантов использования (Use Case)
 
-*(сюда вставить картинку, например через Mermaid или PlantUML)*  
+%%{init: {'theme':'base', 'themeVariables': { 'actorBorder':'#000', 'actorTextColor':'#000', 'primaryColor':'#e0f2fe', 'primaryTextColor':'#000'}}}%%
 
 Акторы:  
 - **Пользователь** (получает рекомендации через API и Telegram)  
 - **Менеджер** (управляет правилами, просматривает статистику)
 - **Внешняя система** (управляет кэшем, получает инфо о сервисе)
 - ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'actorBorder':'#000', 'actorTextColor':'#000', 'primaryColor':'#e0f2fe', 'primaryTextColor':'#000'}}}%%
+
 
 usecaseDiagram
   actor Пользователь
