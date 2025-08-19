@@ -1,81 +1,73 @@
-//package com.example.credit_product;
-//
-//import com.example.credit_product.config.RecommendationController;
-//import com.example.credit_product.dto.RecommendationDTO;
-//import com.example.credit_product.repository.UserRepository;
-//import com.example.credit_product.service.RecommendationService;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-//
-//import java.util.List;
-//import java.util.UUID;
-//
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.Mockito.*;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-//
-//@ExtendWith(MockitoExtension.class)
-//public class RecommendationControllerTest {
-//
-//    @Mock
-//    private RecommendationService recommendationService;
-//
-//    @Mock
-//    private UserRepository userRepository;
-//
-//    @InjectMocks
-//    private RecommendationController recommendationController;
-//
-//    private MockMvc mockMvc;
-//
-//    private final UUID testUserId = UUID.fromString("cd515076-5d8a-44be-930e-8d4fcb79f42d");
-//
-//    @BeforeEach
-//    public void setup() {
-//        mockMvc = MockMvcBuilders.standaloneSetup(recommendationController).build();
-//    }
-//
-//    @Test
-//    public void getRecommendations_ShouldReturnRecommendations() throws Exception {
-//        // Подготовка тестовых данных
-//        List<RecommendationDTO> mockRecommendations = List.of(
-//                new RecommendationDTO("Invest 500", "147f6a0f-3b91-413b-ab99-87f081d60d5a", "Test description")
-//        );
-//
-//        // Настройка моков
-//        when(userRepository.existsById(testUserId)).thenReturn(true);
-//        when(recommendationService.getRecommendations(testUserId)).thenReturn(mockRecommendations);
-//
-//        // Выполнение запроса и проверки
-//        mockMvc.perform(get("/recommendation/{userId}", testUserId))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType("application/json"))
-//                .andExpect(jsonPath("$.userId").value(testUserId.toString())) // Изменено с user_id на userId
-//                .andExpect(jsonPath("$.recommendations[0].name").value("Invest 500"))
-//                .andExpect(jsonPath("$.recommendations[0].id").value("147f6a0f-3b91-413b-ab99-87f081d60d5a"));
-//
-//        // Проверка вызовов
-//        verify(userRepository, times(1)).existsById(testUserId);
-//        verify(recommendationService, times(1)).getRecommendations(testUserId);
-//    }
-//
-//    @Test
-//    public void getRecommendations_ShouldReturnEmptyList() throws Exception {
-//        when(userRepository.existsById(testUserId)).thenReturn(true);
-//        when(recommendationService.getRecommendations(testUserId)).thenReturn(List.of());
-//
-//        mockMvc.perform(get("/recommendation/{userId}", testUserId))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType("application/json"))
-//                .andExpect(jsonPath("$.userId").value(testUserId.toString())) // Изменено с user_id на userId
-//                .andExpect(jsonPath("$.recommendations").isEmpty());
-//    }
-//
-//}
+package com.example.credit_product;
+
+import com.example.credit_product.controller.GlobalExceptionHandler;
+import com.example.credit_product.controller.RecommendationController;
+import com.example.credit_product.dto.RecommendationDTO;
+import com.example.credit_product.dto.RecommendationResponse;
+import com.example.credit_product.exception.UserNotFoundException;
+import com.example.credit_product.repository.UserRepository;
+import com.example.credit_product.service.RecommendationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
+import java.util.UUID;
+
+import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(controllers = RecommendationController.class)
+@Import(GlobalExceptionHandler.class)
+class RecommendationControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper om;
+
+    @MockBean
+    private RecommendationService recommendationService;
+
+    @MockBean
+    private UserRepository userRepository;
+
+    @Test
+    void getRecommendations_ok() throws Exception {
+        UUID userId = UUID.randomUUID();
+        List<RecommendationDTO> recs = List.of(
+                new RecommendationDTO("Product A", "prod-a", "text A"),
+                new RecommendationDTO("Product B", "prod-b", "text B")
+        );
+        when(recommendationService.getRecommendations(userId))
+                .thenReturn(recs);
+
+        mockMvc.perform(get("/recommendation/{userId}", userId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(userId.toString()))
+                .andExpect(jsonPath("$.recommendations", hasSize(2)))
+                .andExpect(jsonPath("$.recommendations[0].name").value("Product A"))
+                .andExpect(jsonPath("$.recommendations[1].id").value("prod-b"));
+    }
+
+    @Test
+    void getRecommendations_userNotFound_returns404() throws Exception {
+        UUID userId = UUID.randomUUID();
+        when(recommendationService.getRecommendations(userId))
+                .thenThrow(new UserNotFoundException(userId.toString()));
+
+        mockMvc.perform(get("/recommendation/{userId}", userId))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(404))
+                .andExpect(jsonPath("$.message", containsString("не найден")));
+    }
+}

@@ -18,7 +18,6 @@ import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.example.credit_product.repository.dynamic",
         entityManagerFactoryRef = "dynamicRulesEntityManagerFactory",
         transactionManagerRef = "dynamicRulesTransactionManager"
 )

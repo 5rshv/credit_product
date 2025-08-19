@@ -13,7 +13,6 @@ public class RecommendationResponse {
     private List<RecommendationDTO> recommendations;
 
 
-    // Конструкторы
     public RecommendationResponse() {
     }
 
@@ -22,7 +21,6 @@ public class RecommendationResponse {
         this.recommendations = recommendations;
     }
 
-    // Геттеры и сеттеры
     public String getUserId() {
         return userId;
     }

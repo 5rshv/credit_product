@@ -25,9 +25,6 @@ public class UserRepository {
 
     }
 
-    /**
-     * Проверяет существование пользователя по ID
-     */
     public boolean existsById(UUID userId) {
         String sql = "SELECT COUNT(*) > 0 FROM users WHERE id = ?::uuid";
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
@@ -38,9 +35,6 @@ public class UserRepository {
     }
 
 
-    /**
-     * Находит пользователя по ID
-     */
     public Optional<Users> findById(UUID userId) {
         String sql = "SELECT id, name FROM users WHERE id = ?";
         try {
@@ -51,9 +45,7 @@ public class UserRepository {
         }
     }
 
-    /**
-     * Получает имя пользователя по ID
-     */
+
     public Optional<String> getUserName(UUID userId) {
         String sql = "SELECT name FROM users WHERE id = ?";
         try {
@@ -64,27 +56,22 @@ public class UserRepository {
         }
     }
 
-    /**
-     * Получает всех пользователей, имеющих транзакции
-     */
+
     public List<Users> findAllUsersWithTransactions() {
         String sql = """
-            SELECT DISTINCT u.id, u.name
-            FROM users u
-            JOIN transactions t ON u.id = t.user_id
-            """;
+                SELECT DISTINCT u.id, u.name
+                FROM users u
+                JOIN transactions t ON u.id = t.user_id
+                """;
         return jdbcTemplate.query(sql, userRowMapper);
     }
 
-    /**
-     * Получает количество продуктов, используемых пользователем
-     */
     public int countUserProducts(UUID userId) {
         String sql = """
-            SELECT COUNT(DISTINCT product_id)
-            FROM transactions
-            WHERE user_id = ?
-            """;
+                SELECT COUNT(DISTINCT product_id)
+                FROM transactions
+                WHERE user_id = ?
+                """;
         return jdbcTemplate.queryForObject(sql, Integer.class, userId.toString());
     }
 
@@ -94,7 +81,7 @@ public class UserRepository {
             return jdbcTemplate.query(sql, userRowMapper);
         } catch (Exception e) {
             ErrorManager log;
-            return List.of(); // Возвращаем пустой список вместо выброса исключения
+            return List.of();
         }
     }
 

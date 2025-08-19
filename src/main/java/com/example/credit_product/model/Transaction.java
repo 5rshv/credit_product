@@ -29,10 +29,8 @@ public class Transaction {
     private LocalDate date;
 
     public Transaction() {
-        // обязательный конструктор без параметров
     }
 
-    // Конструктор со всеми полями для удобства
     public Transaction(UUID id, UUID userId, Product product, TransactionType type, long amount, LocalDate date) {
         this.id = id;
         this.userId = userId;
@@ -41,8 +39,6 @@ public class Transaction {
         this.amount = amount;
         this.date = date;
     }
-
-    // Геттеры и сеттеры
 
     public UUID getId() {
         return id;
