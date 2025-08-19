@@ -142,7 +142,7 @@ usecaseDiagram
 
 ## 🖼 Диаграммы
 - Диаграмма вариантов использования (Use Case):  
-  *(сюда вставим картинку из PlantUML или Mermaid)*  
+- ![Uploading image.png…]()
 - Диаграмма компонентов приложения.  
 - Activity Diagram алгоритма рекомендаций.  
 
