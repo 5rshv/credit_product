@@ -143,8 +143,8 @@ usecaseDiagram
 ## 🖼 Диаграммы
 - Диаграмма вариантов использования (Use Case):  
 - <img width="1536" height="1024" alt="50e2b5ac-77c8-4840-9278-c2a112c8e486" src="https://github.com/user-attachments/assets/85fb867f-8224-4ca2-ad0b-dfdde38b27c1" />
-- Диаграмма компонентов приложения.
-- %%{init: {'theme':'neutral'}}%%
+```mermaid
+%%{init: {'theme':'neutral'}}%%
 C4Context
 title Компоненты системы рекомендаций
 
@@ -159,6 +159,16 @@ System_Boundary(s1, "Recommendation Service") {
   Component(ruleRepo, "Rule Repository", "PostgreSQL", "Хранение динамических правил")
   Component(userData, "User Data DB", "H2 (read-only)", "Данные пользователей и транзакций")
   Component(cache, "Caffeine Cache", "Java Cache", "Хранение результатов запросов для ускорения работы")
+}
+
+Rel(user, api, "Запросы рекомендаций")
+Rel(user, bot, "Запросы через Telegram")
+Rel(manager, api, "CRUD над правилами, просмотр статистики")
+Rel(extsys, api, "Сброс кеша, получение инфо")
+Rel(api, service, "Вызовы бизнес-логики")
+Rel(service, ruleRepo, "SQL-запросы к динамическим правилам")
+Rel(service, userData, "SQL-запросы к транзакциям")
+Rel(service, cache, "Чтение/запись результатов")
 }
 
 Rel(user, api, "Запросы рекомендаций")
