@@ -35,6 +35,7 @@ public class UserRepository {
     }
 
 
+
     public Optional<Users> findById(UUID userId) {
         String sql = "SELECT id, name FROM users WHERE id = ?";
         try {
@@ -81,6 +82,7 @@ public class UserRepository {
             return jdbcTemplate.query(sql, userRowMapper);
         } catch (Exception e) {
             ErrorManager log;
+
             return List.of();
         }
     }

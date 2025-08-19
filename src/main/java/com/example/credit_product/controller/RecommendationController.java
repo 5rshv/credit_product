@@ -91,12 +91,19 @@ public class RecommendationController {
             )
     })
     @GetMapping("/users")
-    public List<Users> getAllUsers() {
-        return userRepository.findAll();
+    public ResponseEntity<List<Users>> getAllUsers() {
+        try {
+            List<Users> users = userRepository.findAll();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
-
     @GetMapping("/user")
     public List<Users> getAllUser() {
         return userRepository.findAll();
     }
+
+
 }
+
