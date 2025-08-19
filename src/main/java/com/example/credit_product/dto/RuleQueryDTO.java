@@ -15,7 +15,6 @@ public class RuleQueryDTO {
     @Schema(description = "Флаг отрицания")
     private Boolean negate;
 
-    // Геттеры и сеттеры
     public String getQuery() {
         return query;
     }

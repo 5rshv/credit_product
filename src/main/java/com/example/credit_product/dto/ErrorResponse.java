@@ -9,7 +9,6 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    // Геттеры и сеттеры
     public int getStatus() {
         return status;
     }

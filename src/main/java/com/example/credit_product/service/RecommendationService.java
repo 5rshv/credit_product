@@ -29,19 +29,16 @@ public class RecommendationService {
     }
 
     public List<RecommendationDTO> getRecommendations(UUID userId) {
-        // Проверяем существование пользователя
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException(userId.toString());
         }
 
         List<RecommendationDTO> recommendations = new ArrayList<>();
 
-        // Применяем статические правила
         for (RecommendationRuleSet rule : staticRules) {
             rule.getRecommendation(userId).ifPresent(recommendations::add);
         }
 
-        // Применяем динамические правила
         List<DynamicRuleDTO> dynamicRules = dynamicRuleService.getAllRules();
         for (DynamicRuleDTO rule : dynamicRules) {
             if (dynamicRuleEngine.evaluateRule(rule, userId)) {

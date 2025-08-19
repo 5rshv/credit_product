@@ -11,13 +11,12 @@ public class TransactionType {
     private UUID id;
 
     @Column(nullable = false, unique = true)
-    private String code; // например, "DEPOSIT"
+    private String code;
 
     @Column(nullable = false)
-    private String name; // например, "Пополнение"
+    private String name;
 
     public TransactionType() {
-        // Обязательный конструктор без параметров для JPA
     }
 
     public TransactionType(UUID id, String code, String name) {

@@ -11,7 +11,6 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 
-        // конфигурация маппинга для RecommendationRule -> RecommendationRuleDTO
         modelMapper.createTypeMap(
                 com.example.credit_product.model.RecommendationRule.class,
                 com.example.credit_product.dto.RecommendationRuleDTO.class

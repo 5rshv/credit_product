@@ -22,7 +22,6 @@ public class DynamicRule {
     @Column(name = "rule_json", nullable = false, columnDefinition = "TEXT")
     private String ruleJson;
 
-    // Геттеры и сеттеры
     public UUID getId() {
         return id;
     }

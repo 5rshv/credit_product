@@ -11,13 +11,13 @@ public class ProductType {
     private UUID id;
 
     @Column(nullable = false, unique = true)
-    private String code; // например, "SAVING"
+    private String code;
 
     @Column(nullable = false)
-    private String name; // например, "Сберегательный счёт"
+    private String name;
 
     public ProductType() {
-        // Конструктор без параметров обязателен для JPA
+
     }
 
     public ProductType(UUID id, String code, String name) {

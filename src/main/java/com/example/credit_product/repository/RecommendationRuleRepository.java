@@ -13,26 +13,14 @@ import java.util.UUID;
 @Repository
 public interface RecommendationRuleRepository extends JpaRepository<RecommendationRule, UUID> {
 
-    /**
-     * Находит все активные правила
-     */
     List<RecommendationRule> findAllByActiveTrue();
 
-    /**
-     * Находит все правила для определенного типа продукта
-     */
     List<RecommendationRule> findAllByProductType(String productType);
 
-    /**
-     * Находит все активные правила для определенного типа продукта
-     */
     List<RecommendationRule> findAllByProductTypeAndActiveTrue(String productType);
 
     boolean existsByName(String name);
 
-    /**
-     * Деактивирует правило по ID
-     */
     @Modifying
     @Query("UPDATE RecommendationRule r SET r.active = false WHERE r.id = :ruleId")
     void deactivateRule(@Param("ruleId") UUID ruleId);

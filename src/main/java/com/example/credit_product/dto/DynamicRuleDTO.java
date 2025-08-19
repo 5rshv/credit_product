@@ -25,7 +25,6 @@ public class DynamicRuleDTO {
     @Schema(description = "Список условий правила")
     private List<RuleQueryDTO> rule;
 
-    // Геттеры и сеттеры
     public String getId() {
         return id;
     }

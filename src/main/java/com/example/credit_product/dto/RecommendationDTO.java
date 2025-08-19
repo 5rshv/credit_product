@@ -10,7 +10,6 @@ public class RecommendationDTO {
     @Schema(description = "Описание продукта")
     private String text;
 
-    // Конструкторы
     public RecommendationDTO() {
     }
 
@@ -20,7 +19,6 @@ public class RecommendationDTO {
         this.text = text;
     }
 
-    // Геттеры и сеттеры
     public String getName() {
         return name;
     }
