@@ -142,7 +142,7 @@ usecaseDiagram
 
 ## 🖼 Диаграммы
 - Диаграмма вариантов использования (Use Case):  
-- ![Uploading image.png…]()
+- <img width="1536" height="1024" alt="50e2b5ac-77c8-4840-9278-c2a112c8e486" src="https://github.com/user-attachments/assets/85fb867f-8224-4ca2-ad0b-dfdde38b27c1" />
 - Диаграмма компонентов приложения.  
 - Activity Diagram алгоритма рекомендаций.  
 
