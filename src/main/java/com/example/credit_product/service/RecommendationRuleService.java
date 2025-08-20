@@ -1,7 +1,6 @@
 package com.example.credit_product.service;
 
 import com.example.credit_product.dto.CreateRuleRequest;
-import com.example.credit_product.dto.RecommendationDTO;
 import com.example.credit_product.dto.RecommendationRuleDTO;
 import com.example.credit_product.model.RecommendationRule;
 import com.example.credit_product.repository.RecommendationRuleRepository;
@@ -19,39 +18,24 @@ import java.util.stream.Collectors;
 public class RecommendationRuleService {
     private final RecommendationRuleRepository ruleRepository;
 
-    /**
-     * Получить все правила
-     */
-    @Transactional(readOnly = true)
     public List<RecommendationRuleDTO> getAllRules() {
         return ruleRepository.findAll().stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Получить активные правила
-     */
-    @Transactional(readOnly = true)
     public List<RecommendationRuleDTO> getActiveRules() {
         return ruleRepository.findAllByActiveTrue().stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Получить правило по ID
-     */
-    @Transactional(readOnly = true)
     public RecommendationRuleDTO getRuleById(UUID id) {
         return ruleRepository.findById(id)
                 .map(this::mapToDTO)
                 .orElseThrow(() -> new EntityNotFoundException("Правило не найдено: " + id));
     }
 
-    /**
-     * Создать новое правило
-     */
     @Transactional
     public RecommendationRuleDTO createRule(CreateRuleRequest request) {
         if (ruleRepository.existsByName(request.getName())) {
@@ -69,9 +53,6 @@ public class RecommendationRuleService {
         return mapToDTO(ruleRepository.save(rule));
     }
 
-    /**
-     * Обновить правило
-     */
     @Transactional
     public RecommendationRuleDTO updateRule(UUID id, CreateRuleRequest request) {
         RecommendationRule rule = ruleRepository.findById(id)
@@ -89,9 +70,6 @@ public class RecommendationRuleService {
         return mapToDTO(ruleRepository.save(rule));
     }
 
-    /**
-     * Активировать/деактивировать правило
-     */
     @Transactional
     public void setRuleActive(UUID id, boolean active) {
         RecommendationRule rule = ruleRepository.findById(id)
@@ -101,9 +79,6 @@ public class RecommendationRuleService {
         ruleRepository.save(rule);
     }
 
-    /**
-     * Удалить правило
-     */
     @Transactional
     public void deleteRule(UUID id) {
         if (!ruleRepository.existsById(id)) {
@@ -112,20 +87,12 @@ public class RecommendationRuleService {
         ruleRepository.deleteById(id);
     }
 
-    /**
-     * Получить правила по типу продукта
-     */
-    @Transactional(readOnly = true)
     public List<RecommendationRuleDTO> getRulesByProductType(String productType) {
         return ruleRepository.findAllByProductType(productType).stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Получить активные правила по типу продукта
-     */
-    @Transactional(readOnly = true)
     public List<RecommendationRuleDTO> getActiveRulesByProductType(String productType) {
         return ruleRepository.findAllByProductTypeAndActiveTrue(productType).stream()
                 .map(this::mapToDTO)
@@ -143,17 +110,10 @@ public class RecommendationRuleService {
                 .build();
     }
 
-    /**
-     * Проверить существование правила по ID
-     */
-    @Transactional(readOnly = true)
     public boolean existsById(UUID id) {
         return ruleRepository.existsById(id);
     }
 
-    /**
-     * Создать новое правило и вернуть сущность
-     */
     @Transactional
     public RecommendationRule createRuleEntity(CreateRuleRequest request) {
         if (ruleRepository.existsByName(request.getName())) {
